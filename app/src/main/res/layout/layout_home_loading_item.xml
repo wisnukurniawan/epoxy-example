@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:layout_marginBottom="@dimen/_16sdp"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <View
+    android:layout_width="50dp"
+    android:layout_height="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:layout_marginStart="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:background="@drawable/loading_background"/>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_16sdp"
+    android:background="@drawable/loading_background"/>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_80sdp"
+    android:background="@drawable/loading_background"/>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_16sdp"
+    android:gravity="end"
+    android:orientation="horizontal">
+
+    <View
+      android:layout_width="@dimen/_40sdp"
+      android:layout_height="@dimen/_8sdp"
+      android:layout_marginEnd="@dimen/_16sdp"
+      android:layout_marginRight="@dimen/_16sdp"
+      android:background="@drawable/loading_background"/>
+
+    <View
+      android:layout_width="@dimen/_80sdp"
+      android:layout_height="@dimen/_8sdp"
+      android:background="@drawable/loading_background"/>
+
+  </LinearLayout>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_1sdp"
+    android:layout_marginStart="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:background="#e8e8e8"/>
+
+</LinearLayout>
