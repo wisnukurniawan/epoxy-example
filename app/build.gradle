@@ -69,4 +69,7 @@ dependencies {
     // List
     implementation "com.airbnb.android:epoxy:3.7.0"
     kapt "com.airbnb.android:epoxy-processor:3.7.0"
+
+    // debug
+    implementation "com.readystatesoftware.chuck:library:1.1.0"
 }

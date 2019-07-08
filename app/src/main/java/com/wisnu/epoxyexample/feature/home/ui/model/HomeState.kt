@@ -6,6 +6,8 @@ sealed class HomeState {
 
   data class Result(val list: List<HomeItemModel>) : HomeState()
 
+  data class NextResult(val list: List<HomeItemModel>) : HomeState()
+
   data class Error(val error: Throwable) : HomeState()
 
 }

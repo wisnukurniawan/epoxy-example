@@ -1,11 +1,13 @@
 package com.wisnu.epoxyexample.di
 
 import com.google.gson.GsonBuilder
+import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.core.server.github.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -24,7 +26,11 @@ fun serverModule(
   }
 
   single {
-    buildOkHttp(get())
+    ChuckInterceptor(androidContext())
+  }
+
+  single {
+    buildOkHttp(get(), get())
   }
 
   single(named(ServerModule.GITHUB_RETROFIT)) {
@@ -38,10 +44,12 @@ fun serverModule(
 }
 
 fun buildOkHttp(
-    httpLoggingInterceptor: HttpLoggingInterceptor
+    httpLoggingInterceptor: HttpLoggingInterceptor,
+    chuckInterceptor: ChuckInterceptor
 ): OkHttpClient {
   return OkHttpClient.Builder().apply {
     addInterceptor(httpLoggingInterceptor)
+    addInterceptor(chuckInterceptor)
     connectTimeout(60L, TimeUnit.SECONDS)
     readTimeout(60L, TimeUnit.SECONDS)
     writeTimeout(60L, TimeUnit.SECONDS)

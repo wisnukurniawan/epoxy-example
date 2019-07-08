@@ -1,17 +1,33 @@
 package com.wisnu.epoxyexample.feature.home.ui
 
 import android.content.Context
-import com.airbnb.epoxy.TypedEpoxyController
+import com.airbnb.epoxy.AutoModel
+import com.airbnb.epoxy.EpoxyController
 import com.wisnu.epoxyexample.feature.home.ui.model.HomeItemModel
-import com.wisnu.epoxyexample.feature.home.ui.view.ProfileView
-import com.wisnu.epoxyexample.feature.home.ui.view.ProjectView
-import com.wisnu.epoxyexample.feature.home.ui.view.profileView
-import com.wisnu.epoxyexample.feature.home.ui.view.projectView
+import com.wisnu.epoxyexample.feature.home.ui.view.*
 
-class HomeItemController(private val context: Context) : TypedEpoxyController<List<HomeItemModel>>() {
 
-  override fun buildModels(data: List<HomeItemModel>?) {
-    data?.forEach {
+class HomeItemController(private val context: Context) : EpoxyController() {
+
+  @AutoModel
+  lateinit var loadMoreView: LoadMoreView_
+
+  var hasMoreToLoad = true
+  val data: MutableList<HomeItemModel> = mutableListOf()
+
+  fun setData(data: MutableList<HomeItemModel>) {
+    this.data.clear()
+    this.data.addAll(data)
+    requestModelBuild()
+  }
+
+  fun addData(data: MutableList<HomeItemModel>) {
+    this.data.addAll(data)
+    requestModelBuild()
+  }
+
+  override fun buildModels() {
+    this.data.forEach {
       when (it) {
         is ProfileView.Model -> {
           profileView(context) {
@@ -27,6 +43,9 @@ class HomeItemController(private val context: Context) : TypedEpoxyController<Li
         }
       }
     }
+
+    loadMoreView.addIf(hasMoreToLoad, this)
+
   }
 
 }

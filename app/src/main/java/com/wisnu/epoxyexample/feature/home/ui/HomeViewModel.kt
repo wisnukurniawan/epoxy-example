@@ -42,7 +42,7 @@ class HomeViewModel(
   }
 
   private fun loadProjects(homeItemModel: HomeItemModel) {
-    disposables += getProject(PROFILE_NAME, PROJECT_PAGE, PROJECT_PER_PAGE)
+    disposables += getProject(PROFILE_NAME, 1, PROJECT_PER_PAGE)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -58,6 +58,22 @@ class HomeViewModel(
         )
   }
 
+  fun loadNextProjects(page: Int) {
+    disposables += getProject(PROFILE_NAME, page, PROJECT_PER_PAGE)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            {
+              val list = mutableListOf<HomeItemModel>()
+              it.forEach { item -> list.add(projectMapper.mapFromEntity(item)) }
+              _state.value = HomeState.NextResult(list)
+            },
+            {
+              _state.value = HomeState.Error(it)
+            }
+        )
+  }
+
   override fun onCleared() {
     super.onCleared()
     disposables.clear()
@@ -65,8 +81,7 @@ class HomeViewModel(
 
   companion object {
     private const val PROFILE_NAME = "wisnukurniawan"
-    private const val PROJECT_PAGE = 1
-    private const val PROJECT_PER_PAGE = 100
+    private const val PROJECT_PER_PAGE = 10
   }
 
 }
