@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.wisnu.epoxyexample.R
 import com.wisnu.epoxyexample.feature.home.ui.model.HomeState
 import com.wisnu.epoxyexample.util.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.activity_home.*
@@ -20,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(com.wisnu.epoxyexample.R.layout.activity_home)
+    setContentView(R.layout.activity_home)
 
     // Init object
     val layoutManager = LinearLayoutManager(this)

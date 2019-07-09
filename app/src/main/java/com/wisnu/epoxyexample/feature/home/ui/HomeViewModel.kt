@@ -42,7 +42,7 @@ class HomeViewModel(
   }
 
   private fun loadProjects(homeItemModel: HomeItemModel) {
-    disposables += getProject(PROFILE_NAME, 1, PROJECT_PER_PAGE)
+    disposables += getProject(PROFILE_NAME, PROJECT_FIRST_PAGE, PROJECT_PER_PAGE)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -81,6 +81,7 @@ class HomeViewModel(
 
   companion object {
     private const val PROFILE_NAME = "wisnukurniawan"
+    private const val PROJECT_FIRST_PAGE = 1
     private const val PROJECT_PER_PAGE = 10
   }
 
