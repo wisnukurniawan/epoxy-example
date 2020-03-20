@@ -13,7 +13,7 @@ class HomeItemController(private val context: Context) : EpoxyController() {
   @AutoModel
   lateinit var loadMoreView: LoadMoreView_
 
-  var hasMoreToLoad = true
+  private var shouldShowLoadMore = true
   private val data: MutableList<HomeUiItemModel> = mutableListOf()
 
   fun setData(data: MutableList<HomeUiItemModel>) {
@@ -25,6 +25,14 @@ class HomeItemController(private val context: Context) : EpoxyController() {
   fun addData(data: MutableList<HomeUiItemModel>) {
     this.data.addAll(data)
     requestModelBuild()
+  }
+
+  fun showLoadMore() {
+    shouldShowLoadMore = true
+  }
+
+  fun hideLoadMore() {
+    shouldShowLoadMore = false
   }
 
   override fun buildModels() {
@@ -45,7 +53,7 @@ class HomeItemController(private val context: Context) : EpoxyController() {
       }
     }
 
-    loadMoreView.addIf(hasMoreToLoad, this)
+    loadMoreView.addIf(shouldShowLoadMore, this)
 
   }
 

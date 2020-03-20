@@ -10,6 +10,7 @@ import com.wisnu.epoxyexample.util.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.collections.immutable.persistentListOf
 
 class HomeViewModel(
     private val homeInteractor: HomeInteractor
@@ -19,33 +20,28 @@ class HomeViewModel(
     private val _state = MutableLiveData<HomeUiState>()
     val state: LiveData<HomeUiState> = _state
 
-    fun loadProfile() {
+    fun loadData() {
+        _state.value = HomeUiState.ShowLoading
         disposables += homeInteractor.getProfileFlowable(PROFILE_NAME)
-            .startWith { _state.value = HomeUiState.ShowLoading }
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { loadProjects(it) },
-                { _state.value = HomeUiState.Error(it) }
-            )
-    }
-
-    private fun loadProjects(homeUiItemModel: HomeUiItemModel) {
-        disposables += homeInteractor.getProjectsFlowable(
-            PROFILE_NAME,
-            PROJECT_FIRST_PAGE,
-            PROJECT_PER_PAGE
-        )
-            .subscribeOn(Schedulers.io())
+            .flatMap { profileModel ->
+                homeInteractor.getProjectsFlowable(
+                    PROFILE_NAME,
+                    PROJECT_FIRST_PAGE,
+                    PROJECT_PER_PAGE
+                )
+                    .map { persistentListOf(profileModel) + it }
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    val list = mutableListOf<HomeUiItemModel>()
-                    list.add(homeUiItemModel)
-                    list.addAll(it)
-                    _state.value = HomeUiState.Result(list)
+                    _state.value = HomeUiState.HideLoading
+                    _state.value = HomeUiState.Result(it)
                 },
-                { _state.value = HomeUiState.Error(it) }
+                {
+                    _state.value = HomeUiState.HideLoading
+                    _state.value = HomeUiState.Error(it)
+                }
             )
     }
 
@@ -54,7 +50,12 @@ class HomeViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { _state.value = HomeUiState.NextResult(it) },
+                {
+                    if (it.isEmpty()) {
+                        _state.value = HomeUiState.HideLoadMore
+                    }
+                    _state.value = HomeUiState.NextResult(it)
+                },
                 { _state.value = HomeUiState.Error(it) }
             )
     }
