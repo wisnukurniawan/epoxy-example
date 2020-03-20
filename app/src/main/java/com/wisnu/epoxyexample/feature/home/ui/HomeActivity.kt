@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.ui.model.HomeState
+import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiState
 import com.wisnu.epoxyexample.util.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.androidx.scope.currentScope
@@ -45,18 +45,18 @@ class HomeActivity : AppCompatActivity() {
     homeViewModel.state.observe(this,
         Observer { state ->
           when (state) {
-            is HomeState.ShowLoading -> {
+            is HomeUiState.ShowLoading -> {
               showLoading()
             }
-            is HomeState.Error -> {
+            is HomeUiState.Error -> {
               hideLoadMore()
             }
-            is HomeState.Result -> {
+            is HomeUiState.Result -> {
               hideLoading()
 
               homeItemController.setData(state.list.toMutableList())
             }
-            is HomeState.NextResult -> {
+            is HomeUiState.NextResult -> {
               if (state.list.isEmpty()) hideLoadMore()
 
               homeItemController.addData(state.list.toMutableList())

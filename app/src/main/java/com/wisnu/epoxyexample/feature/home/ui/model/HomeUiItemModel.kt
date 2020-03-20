@@ -1,5 +1,5 @@
 package com.wisnu.epoxyexample.feature.home.ui.model
 
-interface HomeItemModel {
+interface HomeUiItemModel {
   val id: String
 }
