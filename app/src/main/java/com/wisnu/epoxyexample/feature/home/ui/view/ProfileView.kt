@@ -8,7 +8,7 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.bumptech.glide.Glide
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.ui.model.HomeItemModel
+import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
 import com.wisnu.epoxyexample.util.KotlinEpoxyHolder
 
 @EpoxyModelClass(layout = R.layout.layout_profile_item)
@@ -17,7 +17,7 @@ abstract class ProfileView(
 ) : EpoxyModelWithHolder<ProfileView.Holder>() {
 
   @EpoxyAttribute
-  lateinit var model: Model
+  lateinit var model: ProfileUiModel
 
   override fun bind(holder: Holder) {
     super.bind(holder)
@@ -38,14 +38,5 @@ abstract class ProfileView(
     val bioTv by bind<TextView>(R.id.profile_bio_tv)
     val blogTv by bind<TextView>(R.id.profile_blog_tv)
   }
-
-  data class Model(
-      override val id: String,
-      val name: String,
-      val avatarUrl: String,
-      val location: String,
-      val bio: String,
-      val blog: String
-  ) : HomeItemModel
 
 }

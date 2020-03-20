@@ -1,7 +1,9 @@
 package com.wisnu.epoxyexample.di
 
+import android.content.Context
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
+import com.wisnu.epoxyexample.BuildConfig
 import com.wisnu.epoxyexample.core.server.github.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
@@ -15,46 +17,33 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-fun serverModule(
-    githubBaseUrl: String
-) = module(override = true) {
+val serverModule = module(override = true) {
 
-  single {
-    HttpLoggingInterceptor().apply {
-      level = HttpLoggingInterceptor.Level.BODY
+    single(named(ServerModule.GITHUB_RETROFIT)) {
+        buildRetrofitRxJava(buildOkHttp(androidContext()), BuildConfig.GITHUB_BASE_URL)
     }
-  }
 
-  single {
-    ChuckInterceptor(androidContext())
-  }
-
-  single {
-    buildOkHttp(get(), get())
-  }
-
-  single(named(ServerModule.GITHUB_RETROFIT)) {
-    buildRetrofitRxJava(get(), githubBaseUrl)
-  }
-
-  single(named(ServerModule.GITHUB_SERVICE)) {
-    get<Retrofit>(named(ServerModule.GITHUB_RETROFIT)).create(GithubServerApi::class.java)
-  }
+    single(named(ServerModule.GITHUB_SERVICE)) {
+        get<Retrofit>(named(ServerModule.GITHUB_RETROFIT)).create(GithubServerApi::class.java)
+    }
 
 }
 
 fun buildOkHttp(
-    httpLoggingInterceptor: HttpLoggingInterceptor,
-    chuckInterceptor: ChuckInterceptor
+    context: Context
 ): OkHttpClient {
-  return OkHttpClient.Builder().apply {
-    addInterceptor(httpLoggingInterceptor)
-    addInterceptor(chuckInterceptor)
-    connectTimeout(60L, TimeUnit.SECONDS)
-    readTimeout(60L, TimeUnit.SECONDS)
-    writeTimeout(60L, TimeUnit.SECONDS)
-    retryOnConnectionFailure(true)
-  }.build()
+    return OkHttpClient.Builder().apply {
+        addInterceptor(
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+        )
+        addInterceptor(ChuckInterceptor(context))
+        connectTimeout(60L, TimeUnit.SECONDS)
+        readTimeout(60L, TimeUnit.SECONDS)
+        writeTimeout(60L, TimeUnit.SECONDS)
+        retryOnConnectionFailure(true)
+    }.build()
 }
 
 
@@ -62,10 +51,10 @@ fun buildRetrofitRxJava(
     okHttp: OkHttpClient,
     baseUrl: String
 ): Retrofit {
-  return (Retrofit.Builder())
-      .baseUrl(baseUrl)
-      .client(okHttp)
-      .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-      .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
-      .build()
+    return (Retrofit.Builder())
+        .baseUrl(baseUrl)
+        .client(okHttp)
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
+        .build()
 }
