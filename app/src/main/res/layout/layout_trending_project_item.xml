@@ -2,12 +2,12 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="240dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_width="@dimen/trending_item_width"
+        android:layout_height="@dimen/trending_item_height"
         android:orientation="vertical">
 
         <TextView

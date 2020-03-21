@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.BuildConfig
+import com.wisnu.epoxyexample.data.github.GithubRepository
 import com.wisnu.epoxyexample.data.github.server.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
@@ -17,7 +18,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-val githubServerModule = module(override = true) {
+val githubModule = module(override = true) {
 
     single(named(ServerModule.GITHUB_RETROFIT)) {
         buildRetrofitRxJava(
@@ -29,6 +30,8 @@ val githubServerModule = module(override = true) {
     single(named(ServerModule.GITHUB_SERVICE)) {
         get<Retrofit>(named(ServerModule.GITHUB_RETROFIT)).create(GithubServerApi::class.java)
     }
+
+    single { GithubRepository(get(named(ServerModule.GITHUB_SERVICE))) }
 
 }
 

@@ -1,11 +1,7 @@
 package com.wisnu.epoxyexample.feature.home.ui
 
 import android.content.Context
-import android.util.Log
-import com.airbnb.epoxy.AutoModel
-import com.airbnb.epoxy.Carousel
-import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.carousel
+import com.airbnb.epoxy.*
 import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiItemModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
@@ -50,8 +46,24 @@ class HomeItemController(private val context: Context) : EpoxyController() {
                     }
                 }
                 is TrendingProjectUiModelWrapper -> {
+//                    val carouselModel = CarouselModel_()
+//                        .id(it.id)
+//                        .padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
+//                        .models(
+//                            it.projects.map {
+//                                TrendingProjectView_(context)
+//                                    .id(it.id)
+//                                    .model(it)
+//                            }
+//                        )
+//
+//                    trendingProjectWrapperView {
+//                        id("trending.project.wrapper.wiew")
+//                        trendingProject(carouselModel)
+//                    }
+
                     carousel {
-                      padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
+                        padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
                         id(it.id)
                         withModelsFrom(it.projects) {
                             TrendingProjectView_(context)
