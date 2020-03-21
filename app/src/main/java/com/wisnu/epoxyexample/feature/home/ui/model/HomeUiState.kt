@@ -8,6 +8,8 @@ sealed class HomeUiState {
 
   object HideLoadMore : HomeUiState()
 
+  object ShowLoadMore : HomeUiState()
+
   data class Result(val list: List<HomeUiItemModel>) : HomeUiState()
 
   data class NextResult(val list: List<HomeUiItemModel>) : HomeUiState()

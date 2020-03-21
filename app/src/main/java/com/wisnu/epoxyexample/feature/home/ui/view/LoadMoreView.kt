@@ -5,5 +5,5 @@ import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.EpoxyModelClass
 import com.wisnu.epoxyexample.R
 
-@EpoxyModelClass(layout = R.layout.layout_load_more)
+@EpoxyModelClass(layout = R.layout.layout_home_loading_item)
 abstract class LoadMoreView : EpoxyModel<View>()

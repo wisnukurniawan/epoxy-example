@@ -19,7 +19,6 @@ class HomeActivity : AppCompatActivity() {
     private val loadMoreScrollListener: EndlessRecyclerViewScrollListener by lazy {
         object : EndlessRecyclerViewScrollListener(home_rv.layoutManager!!) {
             override fun onLoadMore(page: Int) {
-                showLoadMore()
                 homeViewModel.loadNextProjects(page + 1)
             }
         }
@@ -31,10 +30,11 @@ class HomeActivity : AppCompatActivity() {
 
         // Init view
         home_rv.layoutManager = LinearLayoutManager(this)
-        home_rv.setItemSpacingDp(16)
+        home_rv.setItemSpacingDp(8)
         home_rv.addOnScrollListener(loadMoreScrollListener)
         home_rv.setController(homeItemController)
 
+        // Load data
         homeViewModel.loadData()
 
         // Listen state
@@ -44,6 +44,7 @@ class HomeActivity : AppCompatActivity() {
                     is HomeUiState.HideLoading -> hideLoading()
                     is HomeUiState.ShowLoading -> showLoading()
                     is HomeUiState.HideLoadMore -> hideLoadMore()
+                    is HomeUiState.ShowLoadMore -> showLoadMore()
                     is HomeUiState.Error -> {
                     }
                     is HomeUiState.Result -> {

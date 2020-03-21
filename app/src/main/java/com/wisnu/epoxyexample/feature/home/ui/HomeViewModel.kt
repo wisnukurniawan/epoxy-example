@@ -4,17 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wisnu.epoxyexample.feature.home.domain.HomeInteractor
-import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiItemModel
 import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiState
 import com.wisnu.epoxyexample.util.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
-class HomeViewModel(
-    private val homeInteractor: HomeInteractor
-) : ViewModel() {
+class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
 
     private val disposables by lazy { CompositeDisposable() }
     private val _state = MutableLiveData<HomeUiState>()
@@ -22,15 +20,15 @@ class HomeViewModel(
 
     fun loadData() {
         _state.value = HomeUiState.ShowLoading
-        disposables += homeInteractor.getProfileFlowable(PROFILE_NAME)
+        disposables += homeInteractor.getProfileFlowable()
             .subscribeOn(Schedulers.io())
-            .flatMap { profileModel ->
-                homeInteractor.getProjectsFlowable(
-                    PROFILE_NAME,
-                    PROJECT_FIRST_PAGE,
-                    PROJECT_PER_PAGE
-                )
-                    .map { persistentListOf(profileModel) + it }
+            .flatMap { profile ->
+                homeInteractor.getTrendingProjectsFlowable()
+                    .map { persistentListOf(profile) + it }
+            }
+            .flatMap { projects ->
+                homeInteractor.getUserProjectsFlowable()
+                    .map { projects.toPersistentList() + it }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -46,7 +44,8 @@ class HomeViewModel(
     }
 
     fun loadNextProjects(page: Int) {
-        disposables += homeInteractor.getProjectsFlowable(PROFILE_NAME, page, PROJECT_PER_PAGE)
+        _state.value = HomeUiState.ShowLoadMore
+        disposables += homeInteractor.getUserProjectsFlowable(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -63,12 +62,6 @@ class HomeViewModel(
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
-    }
-
-    companion object {
-        private const val PROFILE_NAME = "wisnukurniawan"
-        private const val PROJECT_FIRST_PAGE = 1
-        private const val PROJECT_PER_PAGE = 10
     }
 
 }

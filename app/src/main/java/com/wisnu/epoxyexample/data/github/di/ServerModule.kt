@@ -1,10 +1,10 @@
-package com.wisnu.epoxyexample.di
+package com.wisnu.epoxyexample.data.github.di
 
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.BuildConfig
-import com.wisnu.epoxyexample.core.server.github.GithubServerApi
+import com.wisnu.epoxyexample.data.github.server.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -17,10 +17,13 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-val serverModule = module(override = true) {
+val githubServerModule = module(override = true) {
 
     single(named(ServerModule.GITHUB_RETROFIT)) {
-        buildRetrofitRxJava(buildOkHttp(androidContext()), BuildConfig.GITHUB_BASE_URL)
+        buildRetrofitRxJava(
+            buildOkHttp(androidContext()),
+            BuildConfig.GITHUB_BASE_URL
+        )
     }
 
     single(named(ServerModule.GITHUB_SERVICE)) {
@@ -45,7 +48,6 @@ fun buildOkHttp(
         retryOnConnectionFailure(true)
     }.build()
 }
-
 
 fun buildRetrofitRxJava(
     okHttp: OkHttpClient,
