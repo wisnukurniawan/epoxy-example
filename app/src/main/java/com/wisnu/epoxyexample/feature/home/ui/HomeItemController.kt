@@ -4,17 +4,13 @@ import android.content.Context
 import com.airbnb.epoxy.*
 import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
-import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModel
 import com.wisnu.epoxyexample.feature.home.ui.view.*
 
 class HomeItemController(private val context: Context) : EpoxyController() {
 
-    @AutoModel
-    lateinit var loadMoreView: LoadMoreView_
-
-    private var shouldShowLoadMore = false
     private var profile: ProfileUiModel? = null
-    private var trendingProjects: MutableList<TrendingProjectUiModel> = mutableListOf()
+    private val kotlinProjects: MutableList<ProjectUiModel> = mutableListOf()
+    private val javaProjects: MutableList<ProjectUiModel> = mutableListOf()
     private val projects: MutableList<ProjectUiModel> = mutableListOf()
 
     fun setProfile(profile: ProfileUiModel) {
@@ -28,23 +24,16 @@ class HomeItemController(private val context: Context) : EpoxyController() {
         requestModelBuild()
     }
 
-    fun setTrendingProjects(data: MutableList<TrendingProjectUiModel>) {
-        this.trendingProjects.clear()
-        this.trendingProjects.addAll(data)
+    fun setKotlinProjects(data: MutableList<ProjectUiModel>) {
+        this.kotlinProjects.clear()
+        this.kotlinProjects.addAll(data)
         requestModelBuild()
     }
 
-    fun addProjects(data: MutableList<ProjectUiModel>) {
-        this.projects.addAll(data)
+    fun setJavaProjects(data: MutableList<ProjectUiModel>) {
+        this.javaProjects.clear()
+        this.javaProjects.addAll(data)
         requestModelBuild()
-    }
-
-    fun showLoadMore() {
-        shouldShowLoadMore = true
-    }
-
-    fun hideLoadMore() {
-        shouldShowLoadMore = false
     }
 
     override fun buildModels() {
@@ -62,10 +51,10 @@ class HomeItemController(private val context: Context) : EpoxyController() {
 
         CarouselModel_()
             .padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
-            .id("carousel.trending.projects")
+            .id("carousel.projects")
             .models(
                 this.projects.map {
-                    ProjectView_(context)
+                    ProjectView2_(context)
                         .id(it.id)
                         .model(it)
                 }
@@ -73,19 +62,38 @@ class HomeItemController(private val context: Context) : EpoxyController() {
             .addIf(this.projects.isNotEmpty(), this)
 
         HeaderView_()
-            .id("header.trending.projects")
+            .id("header.kotlin.trending.projects")
             .title("Kotlin Trending Repositories")
-            .addIf(this.projects.isNotEmpty(), this)
+            .addIf(this.kotlinProjects.isNotEmpty(), this)
 
-        trendingProjects.map { model ->
-            TrendingProjectView_(context)
-                .id(model.id)
-                .model(model)
-                .addTo(this)
-        }
+        CarouselModel_()
+            .padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
+            .id("carousel.kotlin.trending.projects")
+            .models(
+                this.kotlinProjects.map {
+                    ProjectView2_(context)
+                        .id(it.id)
+                        .model(it)
+                }
+            )
+            .addIf(this.kotlinProjects.isNotEmpty(), this)
 
-        loadMoreView.addIf(shouldShowLoadMore, this)
+        HeaderView_()
+            .id("header.java.trending.projects")
+            .title("Java Trending Repositories")
+            .addIf(this.javaProjects.isNotEmpty(), this)
 
+        CarouselModel_()
+            .padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
+            .id("carousel.java.trending.projects")
+            .models(
+                this.javaProjects.map {
+                    ProjectView2_(context)
+                        .id(it.id)
+                        .model(it)
+                }
+            )
+            .addIf(this.javaProjects.isNotEmpty(), this)
     }
 
 }

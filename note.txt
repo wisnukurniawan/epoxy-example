@@ -63,3 +63,140 @@
 <!--    app:layout_constraintTop_toBottomOf="@+id/project_name_tv" />-->
 
 <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+// Load more
+
+    private val loadMoreScrollListener: EndlessRecyclerViewScrollListener by lazy {
+        object : EndlessRecyclerViewScrollListener(home_rv.layoutManager!!) {
+            override fun onLoadMore(page: Int) {
+                homeViewModel.loadNextProjects(page + 1)
+            }
+        }
+    }
+            home_rv.addOnScrollListener(loadMoreScrollListener)
+  object ShowLoadMore : HomeUiState()
+  object HideLoadMore : HomeUiState()
+      @AutoModel
+      lateinit var loadMoreView: LoadMoreView_
+      loadMoreView.addIf(shouldShowLoadMore, this)
+
+    private fun showLoadMore() {
+        homeItemController.showLoadMore()
+    }
+
+    private fun hideLoadMore() {
+        homeItemController.hideLoadMore()
+    }
+
+        fun showLoadMore() {
+            shouldShowLoadMore = true
+        }
+
+        fun hideLoadMore() {
+            shouldShowLoadMore = false
+        }
+            private var shouldShowLoadMore = false
+
+    fun loadNextProjects(page: Int) {
+        _state.value = HomeUiState.ShowLoadMore
+        disposables += homeInteractor.getUserProjectsFlowable(page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    if (it.isEmpty()) {
+                        _state.value = HomeUiState.HideLoadMore
+                    } else {
+                        _state.value = HomeUiState.NextProjectResult(it)
+                    }
+                },
+                { _state.value = HomeUiState.ShowError(it) }
+            )
+    }
+is HomeUiState.NextProjectResult -> {
+                        homeItemController.addProjects(state.list.toMutableList())
+                    }
+                        data class NextProjectResult(val model: UiModel<List<ProjectUiModel>>) : HomeUiState()
+    fun addProjects(data: MutableList<ProjectUiModel>) {
+        this.projects.addAll(data)
+        requestModelBuild()
+    }
+//
+trendingProjects.map { model ->
+            TrendingProjectView_(context)
+                .id(model.id)
+                .model(model)
+                .addIf(this.trendingProjects.isNotEmpty(), this)
+        }
+
+//
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="@dimen/_16sdp"
+android:layout_marginRight="@dimen/_16sdp">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/project_name_tv"
+        style="@style/Text.Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textSize="@dimen/_14ssp"
+        tools:text="Kovie" />
+
+    <TextView
+        android:id="@+id/project_description_tv"
+        style="@style/Text.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/project_name_tv"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:textColor="#4f5b62"
+        android:textSize="@dimen/_12ssp"
+        tools:text="Kovie is kotlin movie android project use MovieDb API build with MVP architecture, Dagger, and RxJava" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/project_description_tv"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/project_stars_tv"
+            style="@style/Text.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:textColor="#4f5b62"
+            android:textSize="@dimen/_12ssp"
+            tools:text="Stars: 6" />
+
+        <TextView
+            android:id="@+id/project_language_tv"
+            style="@style/Text.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4f5b62"
+            android:textSize="@dimen/_12ssp"
+            tools:text="Language: Kotlin" />
+    </LinearLayout>
+
+</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

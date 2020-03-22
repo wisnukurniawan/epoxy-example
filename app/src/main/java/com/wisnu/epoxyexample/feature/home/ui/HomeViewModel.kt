@@ -17,13 +17,17 @@ class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
     val state: LiveData<HomeUiState> = _state
 
     fun loadContent() {
-        _state.value = HomeUiState.ShowLoading
         disposables += homeInteractor.getProfileFlowable()
+            .doOnSubscribe { _state.postValue(HomeUiState.ShowLoading) }
             .doOnNext { _state.postValue(HomeUiState.ProfileResult(it)) }
             .subscribeOn(Schedulers.io())
             .flatMap {
-                homeInteractor.getTrendingProjectsFlowable()
-                    .doOnNext { _state.postValue(HomeUiState.TrendingProjectResult(it)) }
+                homeInteractor.getKotlinTrendingProjectsFlowable()
+                    .doOnNext { _state.postValue(HomeUiState.KotlinProjectResult(it)) }
+            }
+            .flatMap {
+                homeInteractor.getJavaTrendingProjectsFlowable()
+                    .doOnNext { _state.postValue(HomeUiState.JavaProjectResult(it)) }
             }
             .flatMap {
                 homeInteractor.getUserProjectsFlowable()
@@ -32,23 +36,6 @@ class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { _state.value = HomeUiState.ShowContent },
-                { _state.value = HomeUiState.ShowError(it) }
-            )
-    }
-
-    fun loadNextProjects(page: Int) {
-        _state.value = HomeUiState.ShowLoadMore
-        disposables += homeInteractor.getUserProjectsFlowable(page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    if (it.isEmpty()) {
-                        _state.value = HomeUiState.HideLoadMore
-                    } else {
-                        _state.value = HomeUiState.NextProjectResult(it)
-                    }
-                },
                 { _state.value = HomeUiState.ShowError(it) }
             )
     }

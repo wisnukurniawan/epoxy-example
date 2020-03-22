@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_16sdp">
 
-  <ProgressBar
-    android:layout_width="@dimen/_28sdp"
-    android:layout_height="@dimen/_28sdp"
-    android:layout_gravity="center"/>
+    <include layout="@layout/layout_project_item_loading" />
 
-</LinearLayout>
+</FrameLayout>

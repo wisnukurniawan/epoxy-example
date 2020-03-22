@@ -5,7 +5,6 @@ import com.wisnu.epoxyexample.data.github.db.model.ProfileVo
 import com.wisnu.epoxyexample.data.github.db.model.ProjectVo
 import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
-import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModel
 import io.reactivex.Flowable
 
 class HomeInteractor(private val githubRepository: GithubRepository) {
@@ -21,16 +20,35 @@ class HomeInteractor(private val githubRepository: GithubRepository) {
             page,
             PROJECT_PER_PAGE
         )
-            .map { it.map { item -> mapProjectToUiModel(item) } }
+            .map {
+                it.sortedByDescending { it.stargazersCount }
+                    .take(20)
+                    .map { item -> mapProjectToUiModel(item) }
+            }
     }
 
-    fun getTrendingProjectsFlowable(): Flowable<List<TrendingProjectUiModel>> {
+    fun getKotlinTrendingProjectsFlowable(): Flowable<List<ProjectUiModel>> {
         return githubRepository.getProjectsFlowable(
-            TRENDING_PROJECT_QUERY,
+            TRENDING_KOTLIN_PROJECT_QUERY,
             TRENDING_PROJECT_SORT,
             TRENDING_PROJECT_ORDER
         )
-            .map { it.map { item -> mapTrendingProjectToUiModel(item) } }
+            .map {
+                it.take(20)
+                    .map { item -> mapProjectToUiModel(item) }
+            }
+    }
+
+    fun getJavaTrendingProjectsFlowable(): Flowable<List<ProjectUiModel>> {
+        return githubRepository.getProjectsFlowable(
+            TRENDING_JAVA_PROJECT_QUERY,
+            TRENDING_PROJECT_SORT,
+            TRENDING_PROJECT_ORDER
+        )
+            .map {
+                it.take(20)
+                    .map { item -> mapProjectToUiModel(item) }
+            }
     }
 
     private fun mapProfileToUiModel(type: ProfileVo): ProfileUiModel {
@@ -54,22 +72,13 @@ class HomeInteractor(private val githubRepository: GithubRepository) {
         )
     }
 
-    private fun mapTrendingProjectToUiModel(type: ProjectVo): TrendingProjectUiModel {
-        return TrendingProjectUiModel(
-            type.id,
-            type.name,
-            type.description,
-            type.language,
-            type.stargazersCount
-        )
-    }
-
     companion object {
         private const val PROFILE_NAME = "wisnukurniawan"
         private const val PROJECT_FIRST_PAGE = 1
-        private const val PROJECT_PER_PAGE = 10
+        private const val PROJECT_PER_PAGE = Int.MAX_VALUE
 
-        private const val TRENDING_PROJECT_QUERY = "language:kotlin"
+        private const val TRENDING_KOTLIN_PROJECT_QUERY = "language:kotlin"
+        private const val TRENDING_JAVA_PROJECT_QUERY = "language:java"
         private const val TRENDING_PROJECT_ORDER = "desc"
         private const val TRENDING_PROJECT_SORT = "stars"
     }

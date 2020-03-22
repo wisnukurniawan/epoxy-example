@@ -7,16 +7,16 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModel
+import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
 import com.wisnu.epoxyexample.util.KotlinEpoxyHolder
 
-@EpoxyModelClass(layout = R.layout.layout_trending_project_item)
-abstract class TrendingProjectView(
+@EpoxyModelClass(layout = R.layout.layout_project_item_2)
+abstract class ProjectView2(
     private val context: Context
-) : EpoxyModelWithHolder<TrendingProjectView.Holder>() {
+) : EpoxyModelWithHolder<ProjectView2.Holder>() {
 
     @EpoxyAttribute
-    lateinit var model: TrendingProjectUiModel
+    lateinit var model: ProjectUiModel
 
     override fun bind(holder: Holder) {
         super.bind(holder)

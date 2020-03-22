@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/_16sdp"
-    android:layout_marginRight="@dimen/_16sdp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="@dimen/carousel_item_width"
+        android:layout_height="@dimen/carousel_item_height"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/project_name_tv"
@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginLeft="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:textSize="@dimen/_14ssp"
             tools:text="Kovie" />
 
@@ -31,6 +31,8 @@
             android:layout_marginLeft="@dimen/_16sdp"
             android:layout_marginRight="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:textColor="#4f5b62"
             android:textSize="@dimen/_12ssp"
             tools:text="Kovie is kotlin movie android project use MovieDb API build with MVP architecture, Dagger, and RxJava" />
@@ -38,7 +40,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/project_description_tv"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/_16sdp"
             android:layout_marginRight="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_16sdp"
@@ -67,4 +69,5 @@
         </LinearLayout>
 
     </RelativeLayout>
+
 </com.google.android.material.card.MaterialCardView>

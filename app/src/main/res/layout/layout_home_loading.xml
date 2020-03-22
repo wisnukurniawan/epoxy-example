@@ -16,7 +16,7 @@
         android:layout_marginBottom="@dimen/_8sdp" />
 
     <include
-        layout="@layout/layout_project_loading"
+        layout="@layout/layout_project_loading_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16sdp"
@@ -24,12 +24,27 @@
         android:layout_marginBottom="@dimen/_8sdp" />
 
     <include
-        layout="@layout/layout_trending_project_loading"
+        layout="@layout/layout_project_loading_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginRight="@dimen/_16sdp" />
+        android:layout_marginBottom="@dimen/_8sdp" />
+
+    <include
+        layout="@layout/layout_project_loading_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_8sdp" />
+
+    <include
+        layout="@layout/layout_project_loading_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_8sdp" />
 
 </LinearLayout>
