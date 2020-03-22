@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import androidx.core.view.ViewCompat
 import com.airbnb.epoxy.*
 import com.wisnu.epoxyexample.R
+import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModel
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
 class TrendingProjectWrapperView @JvmOverloads constructor(
@@ -14,15 +15,21 @@ class TrendingProjectWrapperView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private val carousel: EpoxyRecyclerView
+    private val carousel: Carousel
 
     init {
         inflate(context, R.layout.layout_trending_project_wrapper, this)
         carousel = findViewById(R.id.project_carousel)
+        carousel.setPadding(Carousel.Padding.dp(16, 2, 16, 2, 8))
     }
 
     @ModelProp
-    fun setTrendingProject(trendingProjectCarousel: CarouselModel_) {
-        carousel.setModels(listOf(trendingProjectCarousel))
+    fun setTrendingProject(projects: List<TrendingProjectUiModel>) {
+        val models = projects.map {
+            TrendingProjectView_(context)
+                .id(it.id)
+                .model(it)
+        }
+        carousel.setModels(models)
     }
 }

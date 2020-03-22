@@ -62,6 +62,10 @@ class HomeItemController(private val context: Context) : EpoxyController() {
 //                        trendingProject(carouselModel)
 //                    }
 
+                    headerView {
+                        id("header.trending.repositories")
+                        title("Kotlin Trending Repositories")
+                    }
                     carousel {
                         padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
                         id(it.id)
@@ -71,6 +75,15 @@ class HomeItemController(private val context: Context) : EpoxyController() {
                                 .model(it)
                         }
                     }
+                    headerView {
+                        id("header.my.repositories")
+                        title("My Repositories")
+                    }
+
+//                    trendingProjectWrapperView {
+//                        id("trending.project.wrapper.wiew")
+//                        trendingProject(it.projects)
+//                    }
                 }
                 is ProjectUiModel -> {
                     projectView(context) {
