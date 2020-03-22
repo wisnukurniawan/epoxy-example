@@ -7,8 +7,3 @@ data class TrendingProjectUiModel(
     val language: String,
     val stars: Int
 )
-
-data class TrendingProjectUiModelWrapper(
-    override val id: String,
-    val projects: List<TrendingProjectUiModel>
-) : HomeUiItemModel

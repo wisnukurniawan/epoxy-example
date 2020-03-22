@@ -35,23 +35,28 @@ class HomeActivity : AppCompatActivity() {
         home_rv.setController(homeItemController)
 
         // Load data
-        homeViewModel.loadData()
+        homeViewModel.loadContent()
 
         // Listen state
         homeViewModel.state.observe(this,
             Observer { state ->
                 when (state) {
-                    is HomeUiState.HideLoading -> hideLoading()
+                    is HomeUiState.ShowContent -> showContent()
                     is HomeUiState.ShowLoading -> showLoading()
-                    is HomeUiState.HideLoadMore -> hideLoadMore()
                     is HomeUiState.ShowLoadMore -> showLoadMore()
-                    is HomeUiState.Error -> {
+                    is HomeUiState.ShowError -> showError()
+                    is HomeUiState.HideLoadMore -> hideLoadMore()
+                    is HomeUiState.ProfileResult -> {
+                        homeItemController.setProfile(state.profile)
                     }
-                    is HomeUiState.Result -> {
-                        homeItemController.setData(state.list.toMutableList())
+                    is HomeUiState.TrendingProjectResult -> {
+                        homeItemController.setTrendingProjects(state.list.toMutableList())
                     }
-                    is HomeUiState.NextResult -> {
-                        homeItemController.addData(state.list.toMutableList())
+                    is HomeUiState.ProjectResult -> {
+                        homeItemController.setProjects(state.list.toMutableList())
+                    }
+                    is HomeUiState.NextProjectResult -> {
+                        homeItemController.addProjects(state.list.toMutableList())
                     }
                 }
             }
@@ -59,15 +64,22 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
+        home_rv.visibility = View.GONE
         loading_view.visibility = View.VISIBLE
     }
 
-    private fun hideLoading() {
+    private fun showContent() {
+        home_rv.visibility = View.VISIBLE
         loading_view.visibility = View.GONE
     }
 
     private fun showLoadMore() {
         homeItemController.showLoadMore()
+    }
+
+    private fun showError() {
+        home_rv.visibility = View.GONE
+        loading_view.visibility = View.GONE
     }
 
     private fun hideLoadMore() {

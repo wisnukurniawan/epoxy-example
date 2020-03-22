@@ -6,7 +6,6 @@ import com.wisnu.epoxyexample.data.github.db.model.ProjectVo
 import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
 import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModel
-import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModelWrapper
 import io.reactivex.Flowable
 
 class HomeInteractor(private val githubRepository: GithubRepository) {
@@ -25,14 +24,13 @@ class HomeInteractor(private val githubRepository: GithubRepository) {
             .map { it.map { item -> mapProjectToUiModel(item) } }
     }
 
-    fun getTrendingProjectsFlowable(): Flowable<TrendingProjectUiModelWrapper> {
+    fun getTrendingProjectsFlowable(): Flowable<List<TrendingProjectUiModel>> {
         return githubRepository.getProjectsFlowable(
             TRENDING_PROJECT_QUERY,
             TRENDING_PROJECT_SORT,
             TRENDING_PROJECT_ORDER
         )
             .map { it.map { item -> mapTrendingProjectToUiModel(item) } }
-            .map { TrendingProjectUiModelWrapper(TRENDING_PROJECT_ID, it) }
     }
 
     private fun mapProfileToUiModel(type: ProfileVo): ProfileUiModel {
@@ -71,7 +69,6 @@ class HomeInteractor(private val githubRepository: GithubRepository) {
         private const val PROJECT_FIRST_PAGE = 1
         private const val PROJECT_PER_PAGE = 10
 
-        private const val TRENDING_PROJECT_ID = "trending.project.id"
         private const val TRENDING_PROJECT_QUERY = "language:kotlin"
         private const val TRENDING_PROJECT_ORDER = "desc"
         private const val TRENDING_PROJECT_SORT = "stars"

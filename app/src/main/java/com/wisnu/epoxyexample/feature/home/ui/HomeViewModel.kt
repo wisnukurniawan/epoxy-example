@@ -9,8 +9,6 @@ import com.wisnu.epoxyexample.util.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
 
@@ -18,28 +16,23 @@ class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
     private val _state = MutableLiveData<HomeUiState>()
     val state: LiveData<HomeUiState> = _state
 
-    fun loadData() {
+    fun loadContent() {
         _state.value = HomeUiState.ShowLoading
         disposables += homeInteractor.getProfileFlowable()
+            .doOnNext { _state.postValue(HomeUiState.ProfileResult(it)) }
             .subscribeOn(Schedulers.io())
-            .flatMap { profile ->
+            .flatMap {
                 homeInteractor.getTrendingProjectsFlowable()
-                    .map { persistentListOf(profile) + it }
+                    .doOnNext { _state.postValue(HomeUiState.TrendingProjectResult(it)) }
             }
-            .flatMap { projects ->
+            .flatMap {
                 homeInteractor.getUserProjectsFlowable()
-                    .map { projects.toPersistentList() + it }
+                    .doOnNext { _state.postValue(HomeUiState.ProjectResult(it)) }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {
-                    _state.value = HomeUiState.HideLoading
-                    _state.value = HomeUiState.Result(it)
-                },
-                {
-                    _state.value = HomeUiState.HideLoading
-                    _state.value = HomeUiState.Error(it)
-                }
+                { _state.value = HomeUiState.ShowContent },
+                { _state.value = HomeUiState.ShowError(it) }
             )
     }
 
@@ -52,10 +45,11 @@ class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
                 {
                     if (it.isEmpty()) {
                         _state.value = HomeUiState.HideLoadMore
+                    } else {
+                        _state.value = HomeUiState.NextProjectResult(it)
                     }
-                    _state.value = HomeUiState.NextResult(it)
                 },
-                { _state.value = HomeUiState.Error(it) }
+                { _state.value = HomeUiState.ShowError(it) }
             )
     }
 

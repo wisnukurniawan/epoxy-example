@@ -2,29 +2,40 @@ package com.wisnu.epoxyexample.feature.home.ui
 
 import android.content.Context
 import com.airbnb.epoxy.*
-import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiItemModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
 import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
-import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModelWrapper
+import com.wisnu.epoxyexample.feature.home.ui.model.TrendingProjectUiModel
 import com.wisnu.epoxyexample.feature.home.ui.view.*
-import com.wisnu.epoxyexample.util.withModelsFrom
 
 class HomeItemController(private val context: Context) : EpoxyController() {
 
     @AutoModel
     lateinit var loadMoreView: LoadMoreView_
 
-    private var shouldShowLoadMore = true
-    private val data: MutableList<HomeUiItemModel> = mutableListOf()
+    private var shouldShowLoadMore = false
+    private var profile: ProfileUiModel? = null
+    private var trendingProjects: MutableList<TrendingProjectUiModel> = mutableListOf()
+    private val projects: MutableList<ProjectUiModel> = mutableListOf()
 
-    fun setData(data: MutableList<HomeUiItemModel>) {
-        this.data.clear()
-        this.data.addAll(data)
+    fun setProfile(profile: ProfileUiModel) {
+        this.profile = profile
         requestModelBuild()
     }
 
-    fun addData(data: MutableList<HomeUiItemModel>) {
-        this.data.addAll(data)
+    fun setProjects(data: MutableList<ProjectUiModel>) {
+        this.projects.clear()
+        this.projects.addAll(data)
+        requestModelBuild()
+    }
+
+    fun setTrendingProjects(data: MutableList<TrendingProjectUiModel>) {
+        this.trendingProjects.clear()
+        this.trendingProjects.addAll(data)
+        requestModelBuild()
+    }
+
+    fun addProjects(data: MutableList<ProjectUiModel>) {
+        this.projects.addAll(data)
         requestModelBuild()
     }
 
@@ -37,61 +48,40 @@ class HomeItemController(private val context: Context) : EpoxyController() {
     }
 
     override fun buildModels() {
-        this.data.forEach {
-            when (it) {
-                is ProfileUiModel -> {
-                    profileView(context) {
-                        id(it.id)
-                        model(it)
-                    }
-                }
-                is TrendingProjectUiModelWrapper -> {
-//                    val carouselModel = CarouselModel_()
-//                        .id(it.id)
-//                        .padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
-//                        .models(
-//                            it.projects.map {
-//                                TrendingProjectView_(context)
-//                                    .id(it.id)
-//                                    .model(it)
-//                            }
-//                        )
-//
-//                    trendingProjectWrapperView {
-//                        id("trending.project.wrapper.wiew")
-//                        trendingProject(carouselModel)
-//                    }
+        this.profile?.let {
+            ProfileView_(context)
+                .id(it.id)
+                .model(it)
+                .addTo(this)
+        }
 
-                    headerView {
-                        id("header.trending.repositories")
-                        title("Kotlin Trending Repositories")
-                    }
-                    carousel {
-                        padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
-                        id(it.id)
-                        withModelsFrom(it.projects) {
-                            TrendingProjectView_(context)
-                                .id(it.id)
-                                .model(it)
-                        }
-                    }
-                    headerView {
-                        id("header.my.repositories")
-                        title("My Repositories")
-                    }
+        HeaderView_()
+            .id("header.my.projects")
+            .title("My Repositories")
+            .addIf(this.projects.isNotEmpty(), this)
 
-//                    trendingProjectWrapperView {
-//                        id("trending.project.wrapper.wiew")
-//                        trendingProject(it.projects)
-//                    }
+        CarouselModel_()
+            .padding(Carousel.Padding.dp(16, 2, 16, 2, 8))
+            .id("carousel.trending.projects")
+            .models(
+                this.projects.map {
+                    ProjectView_(context)
+                        .id(it.id)
+                        .model(it)
                 }
-                is ProjectUiModel -> {
-                    projectView(context) {
-                        id(it.id)
-                        model(it)
-                    }
-                }
-            }
+            )
+            .addIf(this.projects.isNotEmpty(), this)
+
+        HeaderView_()
+            .id("header.trending.projects")
+            .title("Kotlin Trending Repositories")
+            .addIf(this.projects.isNotEmpty(), this)
+
+        trendingProjects.map { model ->
+            TrendingProjectView_(context)
+                .id(model.id)
+                .model(model)
+                .addTo(this)
         }
 
         loadMoreView.addIf(shouldShowLoadMore, this)

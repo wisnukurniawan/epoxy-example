@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.card.MaterialCardView
+    <include
+        layout="@layout/layout_profile_item_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_16sdp"
@@ -12,110 +13,23 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_16sdp"
         android:layout_marginRight="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_8sdp">
+        android:layout_marginBottom="@dimen/_8sdp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp">
-
-            <View
-                android:id="@+id/iv"
-                android:layout_width="@dimen/_72sdp"
-                android:layout_height="@dimen/_72sdp"
-                android:background="@drawable/shape_background" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginLeft="@dimen/_16sdp"
-                android:layout_toEndOf="@+id/iv"
-                android:layout_toRightOf="@+id/iv"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="150dp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:background="@drawable/loading_background" />
-
-                <View
-                    android:layout_width="180dp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/loading_background" />
-
-                <View
-                    android:layout_width="190dp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/loading_background" />
-
-                <View
-                    android:layout_width="240dp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/loading_background" />
-
-                <View
-                    android:layout_width="250dp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:background="@drawable/loading_background" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <include
+        layout="@layout/layout_project_loading"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginLeft="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="@dimen/_8sdp" />
 
-        <include layout="@layout/layout_home_loading_item_2" />
-
-        <View
-            android:layout_width="@dimen/_8sdp"
-            android:layout_height="0dp" />
-
-        <include layout="@layout/layout_home_loading_item_2" />
-
-    </LinearLayout>
-
-    <include layout="@layout/layout_home_loading_item" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_8sdp" />
-
-    <include layout="@layout/layout_home_loading_item" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_8sdp" />
-
-    <include layout="@layout/layout_home_loading_item" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_8sdp" />
-
-    <include layout="@layout/layout_home_loading_item" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_8sdp" />
-
-    <include layout="@layout/layout_home_loading_item" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_8sdp" />
-
-    <include layout="@layout/layout_home_loading_item" />
+    <include
+        layout="@layout/layout_trending_project_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp" />
 
 </LinearLayout>

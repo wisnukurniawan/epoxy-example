@@ -28,10 +28,10 @@ abstract class TrendingProjectView(
     }
 
     inner class Holder : KotlinEpoxyHolder() {
-        val nameTv by bind<TextView>(R.id.project_trending_name_tv)
-        val descriptionTv by bind<TextView>(R.id.project_trending_description_tv)
-        val starsTv by bind<TextView>(R.id.project_trending_stars_tv)
-        val languageTv by bind<TextView>(R.id.project_trending_language_tv)
+        val nameTv by bind<TextView>(R.id.project_name_tv)
+        val descriptionTv by bind<TextView>(R.id.project_description_tv)
+        val starsTv by bind<TextView>(R.id.project_stars_tv)
+        val languageTv by bind<TextView>(R.id.project_language_tv)
     }
 
 }
