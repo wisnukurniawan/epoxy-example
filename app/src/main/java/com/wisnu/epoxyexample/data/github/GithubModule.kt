@@ -1,10 +1,9 @@
-package com.wisnu.epoxyexample.data.github.di
+package com.wisnu.epoxyexample.data.github
 
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.BuildConfig
-import com.wisnu.epoxyexample.data.github.GithubRepository
 import com.wisnu.epoxyexample.data.github.server.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers

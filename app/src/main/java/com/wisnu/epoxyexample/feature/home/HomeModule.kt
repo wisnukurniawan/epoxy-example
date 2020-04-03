@@ -1,4 +1,4 @@
-package com.wisnu.epoxyexample.feature.home.di
+package com.wisnu.epoxyexample.feature.home
 
 import com.wisnu.epoxyexample.feature.home.domain.HomeInteractor
 import com.wisnu.epoxyexample.feature.home.ui.HomeActivity
