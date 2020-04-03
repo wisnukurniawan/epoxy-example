@@ -39,12 +39,12 @@ fun buildOkHttp(
     context: Context
 ): OkHttpClient {
     return OkHttpClient.Builder().apply {
+        addInterceptor(ChuckInterceptor(context))
         addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
         )
-        addInterceptor(ChuckInterceptor(context))
         connectTimeout(60L, TimeUnit.SECONDS)
         readTimeout(60L, TimeUnit.SECONDS)
         writeTimeout(60L, TimeUnit.SECONDS)

@@ -5,5 +5,6 @@ data class ProjectUiModel(
     val name: String,
     val description: String,
     val language: String,
-    val stars: Int
+    val stars: Int,
+    val issues: Int
 )

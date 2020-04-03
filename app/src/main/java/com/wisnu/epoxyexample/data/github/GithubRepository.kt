@@ -50,7 +50,8 @@ class GithubRepository(private val githubServerApi: GithubServerApi) {
             type.name ?: "",
             type.description ?: "",
             type.language ?: "",
-            type.stargazersCount ?: 0
+            type.stargazersCount ?: 0,
+            type.issues ?: 0
         )
     }
 

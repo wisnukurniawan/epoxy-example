@@ -25,6 +25,7 @@ abstract class ProjectView2(
         holder.descriptionTv.text = model.description
         holder.starsTv.text = context.getString(R.string.profile_item_stars, model.stars.toString())
         holder.languageTv.text = context.getString(R.string.profile_item_language, model.language)
+        holder.issuesTv.text = context.getString(R.string.profile_item_issues, model.issues.toString())
     }
 
     inner class Holder : KotlinEpoxyHolder() {
@@ -32,6 +33,7 @@ abstract class ProjectView2(
         val descriptionTv by bind<TextView>(R.id.project_description_tv)
         val starsTv by bind<TextView>(R.id.project_stars_tv)
         val languageTv by bind<TextView>(R.id.project_language_tv)
+        val issuesTv by bind<TextView>(R.id.project_issues_tv)
     }
 
 }

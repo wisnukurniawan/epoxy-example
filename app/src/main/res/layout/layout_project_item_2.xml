@@ -38,14 +38,15 @@
             tools:text="Kovie is kotlin movie android project use MovieDb API build with MVP architecture, Dagger, and RxJava" />
 
         <LinearLayout
+            android:layout_below="@+id/project_description_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/_16sdp"
             android:layout_marginRight="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:gravity="end"
-            android:orientation="horizontal">
+            android:gravity="bottom"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/project_stars_tv"
@@ -57,6 +58,17 @@
                 android:textColor="#4f5b62"
                 android:textSize="@dimen/_12ssp"
                 tools:text="Stars: 6" />
+
+            <TextView
+                android:id="@+id/project_issues_tv"
+                style="@style/Text.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:textColor="#4f5b62"
+                android:textSize="@dimen/_12ssp"
+                tools:text="Issues: 6" />
 
             <TextView
                 android:id="@+id/project_language_tv"

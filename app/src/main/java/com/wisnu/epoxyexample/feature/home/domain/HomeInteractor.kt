@@ -68,14 +68,15 @@ class HomeInteractor(private val githubRepository: GithubRepository) {
             type.name,
             type.description,
             type.language,
-            type.stargazersCount
+            type.stargazersCount,
+            type.issues
         )
     }
 
     companion object {
         private const val PROFILE_NAME = "wisnukurniawan"
         private const val PROJECT_FIRST_PAGE = 1
-        private const val PROJECT_PER_PAGE = Int.MAX_VALUE
+        private const val PROJECT_PER_PAGE = 100
 
         private const val TRENDING_KOTLIN_PROJECT_QUERY = "language:kotlin"
         private const val TRENDING_JAVA_PROJECT_QUERY = "language:java"
