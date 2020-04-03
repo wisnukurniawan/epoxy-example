@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/_22sdp"
+        android:background="@drawable/loading_background" />
+
+    <include layout="@layout/layout_project_item_loading" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp" />
+
+    <include layout="@layout/layout_project_item_loading" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp" />
+
+    <include layout="@layout/layout_project_item_loading" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp" />
+
+    <include layout="@layout/layout_project_item_loading" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp" />
+
+    <include layout="@layout/layout_project_item_loading" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_8sdp" />
+
+    <include layout="@layout/layout_project_item_loading" />
+
+</LinearLayout>

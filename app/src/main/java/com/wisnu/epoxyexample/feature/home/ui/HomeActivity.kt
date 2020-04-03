@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wisnu.epoxyexample.R
 import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiState
-import com.wisnu.epoxyexample.util.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -16,13 +15,6 @@ class HomeActivity : AppCompatActivity() {
 
     private val homeViewModel: HomeViewModel by currentScope.viewModel(this)
     private val homeItemController: HomeItemController by lazy { HomeItemController(this) }
-    private val loadMoreScrollListener: EndlessRecyclerViewScrollListener by lazy {
-        object : EndlessRecyclerViewScrollListener(home_rv.layoutManager!!) {
-            override fun onLoadMore(page: Int) {
-                homeViewModel.loadNextProjects(page + 1)
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,27 +23,29 @@ class HomeActivity : AppCompatActivity() {
         // Init view
         home_rv.layoutManager = LinearLayoutManager(this)
         home_rv.setItemSpacingDp(8)
-        home_rv.addOnScrollListener(loadMoreScrollListener)
         home_rv.setController(homeItemController)
 
         // Load data
-        homeViewModel.loadData()
+        homeViewModel.loadContent()
 
         // Listen state
         homeViewModel.state.observe(this,
             Observer { state ->
                 when (state) {
-                    is HomeUiState.HideLoading -> hideLoading()
+                    is HomeUiState.ShowContent -> showContent()
                     is HomeUiState.ShowLoading -> showLoading()
-                    is HomeUiState.HideLoadMore -> hideLoadMore()
-                    is HomeUiState.ShowLoadMore -> showLoadMore()
-                    is HomeUiState.Error -> {
+                    is HomeUiState.ShowError -> showError()
+                    is HomeUiState.ProfileResult -> {
+                        homeItemController.setProfile(state.model)
                     }
-                    is HomeUiState.Result -> {
-                        homeItemController.setData(state.list.toMutableList())
+                    is HomeUiState.KotlinProjectResult -> {
+                        homeItemController.setKotlinProjects(state.model.toMutableList())
                     }
-                    is HomeUiState.NextResult -> {
-                        homeItemController.addData(state.list.toMutableList())
+                    is HomeUiState.JavaProjectResult -> {
+                        homeItemController.setJavaProjects(state.model.toMutableList())
+                    }
+                    is HomeUiState.ProjectResult -> {
+                        homeItemController.setProjects(state.model.toMutableList())
                     }
                 }
             }
@@ -59,19 +53,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
+        home_rv.visibility = View.GONE
         loading_view.visibility = View.VISIBLE
     }
 
-    private fun hideLoading() {
+    private fun showContent() {
+        home_rv.visibility = View.VISIBLE
         loading_view.visibility = View.GONE
     }
 
-    private fun showLoadMore() {
-        homeItemController.showLoadMore()
-    }
-
-    private fun hideLoadMore() {
-        homeItemController.hideLoadMore()
+    private fun showError() {
+        home_rv.visibility = View.GONE
+        loading_view.visibility = View.GONE
     }
 
 }
