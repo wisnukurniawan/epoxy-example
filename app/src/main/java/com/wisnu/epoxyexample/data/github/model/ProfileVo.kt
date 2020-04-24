@@ -1,4 +1,4 @@
-package com.wisnu.epoxyexample.data.github.db.model
+package com.wisnu.epoxyexample.data.github.model
 
 data class ProfileVo(
     val id: String,

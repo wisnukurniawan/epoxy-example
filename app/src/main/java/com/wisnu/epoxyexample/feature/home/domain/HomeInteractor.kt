@@ -1,10 +1,10 @@
 package com.wisnu.epoxyexample.feature.home.domain
 
 import com.wisnu.epoxyexample.data.github.GithubRepository
-import com.wisnu.epoxyexample.data.github.db.model.ProfileVo
-import com.wisnu.epoxyexample.data.github.db.model.ProjectVo
-import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
-import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
+import com.wisnu.epoxyexample.data.github.model.ProfileVo
+import com.wisnu.epoxyexample.data.github.model.ProjectVo
+import com.wisnu.epoxyexample.feature.home.domain.model.ProfileUiModel
+import com.wisnu.epoxyexample.feature.home.domain.model.ProjectUiModel
 import io.reactivex.Flowable
 
 class HomeInteractor(private val githubRepository: GithubRepository) {

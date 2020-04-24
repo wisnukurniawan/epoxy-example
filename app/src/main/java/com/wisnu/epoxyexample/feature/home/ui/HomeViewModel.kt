@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wisnu.epoxyexample.feature.home.domain.HomeInteractor
-import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiState
+import com.wisnu.epoxyexample.feature.home.domain.model.HomeUiState
 import com.wisnu.epoxyexample.util.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

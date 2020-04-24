@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.ui.model.HomeUiState
+import com.wisnu.epoxyexample.feature.home.domain.model.HomeUiState
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
