@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class HomeViewModel(private val homeInteractor: HomeInteractor) : ViewModel() {
+class HomeViewModel(val homeInteractor: HomeInteractor) : ViewModel() {
 
     private val disposables by lazy { CompositeDisposable() }
     private val _state = MutableLiveData<HomeUiState>()

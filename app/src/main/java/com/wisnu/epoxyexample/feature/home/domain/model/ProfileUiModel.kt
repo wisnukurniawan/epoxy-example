@@ -7,4 +7,17 @@ data class ProfileUiModel(
     val location: String,
     val bio: String,
     val blog: String
-)
+) {
+    companion object {
+        fun empty(): ProfileUiModel {
+            return ProfileUiModel(
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            )
+        }
+    }
+}

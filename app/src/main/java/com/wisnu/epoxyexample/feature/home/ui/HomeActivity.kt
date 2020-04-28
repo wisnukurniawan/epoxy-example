@@ -5,9 +5,25 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jakewharton.rxbinding2.view.RxView
+import com.spotify.mobius.Effects
+import com.spotify.mobius.Effects.effects
+import com.spotify.mobius.Init
+import com.spotify.mobius.MobiusLoop
+import com.spotify.mobius.Update
+import com.spotify.mobius.android.AndroidLogger
+import com.spotify.mobius.android.MobiusAndroid
+import com.spotify.mobius.rx2.RxConnectables
+import com.spotify.mobius.rx2.RxMobius
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.domain.model.HomeUiState
+import com.wisnu.epoxyexample.feature.home.domain.handleEffect
+import com.wisnu.epoxyexample.feature.home.domain.init
+import com.wisnu.epoxyexample.feature.home.domain.model.*
+import com.wisnu.epoxyexample.feature.home.domain.update
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.toolbar_home.*
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -15,6 +31,7 @@ class HomeActivity : AppCompatActivity() {
 
     private val homeViewModel: HomeViewModel by currentScope.viewModel(this)
     private val homeItemController: HomeItemController by lazy { HomeItemController(this) }
+    private lateinit var controller: MobiusLoop.Controller<HomeModel, HomeEvent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,31 +42,80 @@ class HomeActivity : AppCompatActivity() {
         home_rv.setItemSpacingDp(8)
         home_rv.setController(homeItemController)
 
-        // Load data
-        homeViewModel.loadContent()
+//        // Load data
+//        homeViewModel.loadContent()
+//
+//        // Listen state
+//        homeViewModel.state.observe(this,
+//            Observer { state ->
+//                when (state) {
+//                    is HomeUiState.ShowContent -> showContent()
+//                    is HomeUiState.ShowLoading -> showLoading()
+//                    is HomeUiState.ShowError -> showError()
+//                    is HomeUiState.ProfileResult -> {
+//                        homeItemController.setProfile(state.model)
+//                    }
+//                    is HomeUiState.KotlinProjectResult -> {
+//                        homeItemController.setKotlinProjects(state.model.toMutableList())
+//                    }
+//                    is HomeUiState.JavaProjectResult -> {
+//                        homeItemController.setJavaProjects(state.model.toMutableList())
+//                    }
+//                    is HomeUiState.ProjectResult -> {
+//                        homeItemController.setProjects(state.model.toMutableList())
+//                    }
+//                }
+//            }
+//        )
 
-        // Listen state
-        homeViewModel.state.observe(this,
-            Observer { state ->
-                when (state) {
-                    is HomeUiState.ShowContent -> showContent()
-                    is HomeUiState.ShowLoading -> showLoading()
-                    is HomeUiState.ShowError -> showError()
-                    is HomeUiState.ProfileResult -> {
-                        homeItemController.setProfile(state.model)
-                    }
-                    is HomeUiState.KotlinProjectResult -> {
-                        homeItemController.setKotlinProjects(state.model.toMutableList())
-                    }
-                    is HomeUiState.JavaProjectResult -> {
-                        homeItemController.setJavaProjects(state.model.toMutableList())
-                    }
-                    is HomeUiState.ProjectResult -> {
-                        homeItemController.setProjects(state.model.toMutableList())
-                    }
-                }
-            }
+        val loop = RxMobius.loop(
+            Update { model: HomeModel, event: HomeEvent -> update(model, event) },
+            handleEffect(homeViewModel.homeInteractor)
         )
+            .logger(AndroidLogger("Home404"))
+        controller = MobiusAndroid.controller(
+            loop,
+            HomeModel.initial(),
+            { init(it) }
+        )
+        controller.connect(RxConnectables.fromTransformer { render(it) })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        controller.start()
+    }
+
+    override fun onPause() {
+        controller.stop()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        controller.disconnect()
+        super.onDestroy()
+    }
+
+    private fun render(model: Observable<HomeModel>): Observable<HomeEvent> {
+        val disposables = CompositeDisposable()
+        disposables.add(model.subscribe {
+            when (it.loadDataState) {
+                is LoadDataState.WaitingForData -> showLoading()
+                is LoadDataState.Loaded -> {
+                    homeItemController.setProfile(it.loadDataState.myProfileModel)
+                    homeItemController.setProjects(it.loadDataState.myProjectModels.toMutableList())
+                    homeItemController.setKotlinProjects(it.loadDataState.kotlinProjectModels.toMutableList())
+                    homeItemController.setJavaProjects(it.loadDataState.javaProjectModels.toMutableList())
+                    showContent()
+                }
+                is LoadDataState.Failed -> showError()
+                is LoadDataState.NoResult -> showError()
+            }
+        })
+        return Observable.mergeArray(
+            RxView.clicks(home_toolbar_tv).map { HomeEvent.RefreshDataRequested as HomeEvent }
+        )
+            .doOnDispose { disposables.clear() }
     }
 
     private fun showLoading() {
