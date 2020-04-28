@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.airbnb.epoxy.*
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
+import com.wisnu.epoxyexample.feature.home.domain.model.ProjectUiModel
 import kotlinx.android.synthetic.main.layout_project_container.view.*
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)

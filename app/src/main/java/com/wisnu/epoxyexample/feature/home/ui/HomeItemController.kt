@@ -2,8 +2,8 @@ package com.wisnu.epoxyexample.feature.home.ui
 
 import android.content.Context
 import com.airbnb.epoxy.*
-import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
-import com.wisnu.epoxyexample.feature.home.ui.model.ProjectUiModel
+import com.wisnu.epoxyexample.feature.home.domain.model.ProfileUiModel
+import com.wisnu.epoxyexample.feature.home.domain.model.ProjectUiModel
 import com.wisnu.epoxyexample.feature.home.ui.view.*
 
 class HomeItemController(private val context: Context) : EpoxyController() {

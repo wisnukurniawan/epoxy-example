@@ -1,7 +1,7 @@
 package com.wisnu.epoxyexample.data.github
 
-import com.wisnu.epoxyexample.data.github.db.model.ProfileVo
-import com.wisnu.epoxyexample.data.github.db.model.ProjectVo
+import com.wisnu.epoxyexample.data.github.model.ProfileVo
+import com.wisnu.epoxyexample.data.github.model.ProjectVo
 import com.wisnu.epoxyexample.data.github.server.GithubServerApi
 import com.wisnu.epoxyexample.data.github.server.model.ProfileResponse
 import com.wisnu.epoxyexample.data.github.server.model.ProjectResponse

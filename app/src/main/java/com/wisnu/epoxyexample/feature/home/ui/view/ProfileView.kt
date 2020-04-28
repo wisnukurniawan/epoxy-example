@@ -8,7 +8,7 @@ import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.bumptech.glide.Glide
 import com.wisnu.epoxyexample.R
-import com.wisnu.epoxyexample.feature.home.ui.model.ProfileUiModel
+import com.wisnu.epoxyexample.feature.home.domain.model.ProfileUiModel
 import com.wisnu.epoxyexample.util.KotlinEpoxyHolder
 
 @EpoxyModelClass(layout = R.layout.layout_profile_item)

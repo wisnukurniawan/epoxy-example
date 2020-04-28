@@ -1,10 +1,10 @@
-package com.wisnu.epoxyexample.feature.home.ui.model
+package com.wisnu.epoxyexample.data.github.model
 
-data class ProjectUiModel(
+data class ProjectVo(
     val id: String,
     val name: String,
     val description: String,
     val language: String,
-    val stars: Int,
+    val stargazersCount: Int,
     val issues: Int
 )

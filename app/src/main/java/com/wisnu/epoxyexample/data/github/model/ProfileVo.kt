@@ -1,6 +1,6 @@
-package com.wisnu.epoxyexample.feature.home.ui.model
+package com.wisnu.epoxyexample.data.github.model
 
-data class ProfileUiModel(
+data class ProfileVo(
     val id: String,
     val name: String,
     val avatarUrl: String,

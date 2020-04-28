@@ -1,4 +1,4 @@
-package com.wisnu.epoxyexample.feature.home.ui.model
+package com.wisnu.epoxyexample.feature.home.domain.model
 
 sealed class HomeUiState {
 
