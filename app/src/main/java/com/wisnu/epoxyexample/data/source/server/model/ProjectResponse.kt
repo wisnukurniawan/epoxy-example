@@ -1,4 +1,4 @@
-package com.wisnu.epoxyexample.data.server.model
+package com.wisnu.epoxyexample.data.source.server.model
 
 import com.google.gson.annotations.SerializedName
 

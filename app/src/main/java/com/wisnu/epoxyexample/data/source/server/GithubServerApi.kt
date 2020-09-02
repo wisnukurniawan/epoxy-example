@@ -1,8 +1,8 @@
-package com.wisnu.epoxyexample.data.server
+package com.wisnu.epoxyexample.data.source.server
 
-import com.wisnu.epoxyexample.data.server.model.ProfileResponse
-import com.wisnu.epoxyexample.data.server.model.ProjectResponse
-import com.wisnu.epoxyexample.data.server.model.ProjectWrapperResponse
+import com.wisnu.epoxyexample.data.source.server.model.ProfileResponse
+import com.wisnu.epoxyexample.data.source.server.model.ProjectResponse
+import com.wisnu.epoxyexample.data.source.server.model.ProjectWrapperResponse
 import io.reactivex.Flowable
 import retrofit2.http.GET
 import retrofit2.http.Path

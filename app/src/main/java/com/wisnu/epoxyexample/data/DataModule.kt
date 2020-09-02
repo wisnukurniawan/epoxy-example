@@ -6,7 +6,7 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.BuildConfig
 import com.wisnu.epoxyexample.data.repository.RemoteProfileRepository
 import com.wisnu.epoxyexample.data.repository.RemoteProjectRepository
-import com.wisnu.epoxyexample.data.server.GithubServerApi
+import com.wisnu.epoxyexample.data.source.server.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
