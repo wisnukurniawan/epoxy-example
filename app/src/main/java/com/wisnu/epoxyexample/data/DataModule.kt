@@ -4,6 +4,8 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.BuildConfig
+import com.wisnu.epoxyexample.data.repository.RemoteProfileRepository
+import com.wisnu.epoxyexample.data.repository.RemoteProjectRepository
 import com.wisnu.epoxyexample.data.server.GithubServerApi
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
@@ -30,8 +32,8 @@ val dataModule = module(override = true) {
         get<Retrofit>(named(ServerModule.GITHUB_RETROFIT)).create(GithubServerApi::class.java)
     }
 
-    single { ProfileRepository(get(named(ServerModule.GITHUB_SERVICE))) }
-    single { ProjectRepository(get(named(ServerModule.GITHUB_SERVICE))) }
+    single { RemoteProfileRepository(get(named(ServerModule.GITHUB_SERVICE))) }
+    single { RemoteProjectRepository(get(named(ServerModule.GITHUB_SERVICE))) }
 
 }
 
