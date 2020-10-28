@@ -4,6 +4,9 @@ import android.content.Context
 import com.airbnb.epoxy.*
 import com.wisnu.epoxyexample.feature.home.presentation.model.ProfileUiModel
 import com.wisnu.epoxyexample.feature.home.presentation.model.ProjectUiModel
+import com.wisnu.epoxyexample.feature.home.presentation.view.HeaderView_
+import com.wisnu.epoxyexample.feature.home.presentation.view.ProfileView_
+import com.wisnu.epoxyexample.feature.home.presentation.view.ProjectView2_
 
 class HomeItemController(private val context: Context) : EpoxyController() {
 

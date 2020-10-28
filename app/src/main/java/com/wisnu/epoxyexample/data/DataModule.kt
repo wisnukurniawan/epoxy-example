@@ -1,12 +1,14 @@
 package com.wisnu.epoxyexample.data
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
-import com.readystatesoftware.chuck.ChuckInterceptor
 import com.wisnu.epoxyexample.BuildConfig
 import com.wisnu.epoxyexample.data.repository.RemoteProfileRepository
 import com.wisnu.epoxyexample.data.repository.RemoteProjectRepository
 import com.wisnu.epoxyexample.data.source.server.GithubServerApi
+import com.wisnu.epoxyexample.domain.repository.ProfileRepository
+import com.wisnu.epoxyexample.domain.repository.ProjectRepository
 import com.wisnu.epoxyexample.util.ServerModule
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -32,8 +34,8 @@ val dataModule = module(override = true) {
         get<Retrofit>(named(ServerModule.GITHUB_RETROFIT)).create(GithubServerApi::class.java)
     }
 
-    single { RemoteProfileRepository(get(named(ServerModule.GITHUB_SERVICE))) }
-    single { RemoteProjectRepository(get(named(ServerModule.GITHUB_SERVICE))) }
+    single<ProfileRepository> { RemoteProfileRepository(get(named(ServerModule.GITHUB_SERVICE))) }
+    single<ProjectRepository> { RemoteProjectRepository(get(named(ServerModule.GITHUB_SERVICE))) }
 
 }
 
@@ -41,7 +43,7 @@ fun buildOkHttp(
     context: Context
 ): OkHttpClient {
     return OkHttpClient.Builder().apply {
-        addInterceptor(ChuckInterceptor(context))
+        addInterceptor(ChuckerInterceptor(context))
         addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
